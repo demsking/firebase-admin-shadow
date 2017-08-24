@@ -1,0 +1,5 @@
+require('./specs/utils.spec')
+require('./specs/database/database.spec')
+require('./specs/database/DataSnapshot.spec')
+require('./specs/database/Query.spec')
+require('./specs/database/Reference.spec')

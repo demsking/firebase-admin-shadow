@@ -1,0 +1,44 @@
+{
+  "name": "firebase-admin-shadow",
+  "version": "0.1.0",
+  "description": "Firebase Admin Shadow Mock for NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --harmony --trace-warnings index.js",
+    "prepublish": "npm test",
+    "pretest": "standard",
+    "test": "mocha --harmony --trace-warnings test/tests.js",
+    "lint": "standard",
+    "lintd": "nodemon -x 'npm run lint'",
+    "testd": "nodemon -x 'mocha --harmony --trace-warnings test/tests.js'",
+    "coveraged": "nodemon -x 'npm run coverage'",
+    "testdb": "mocha --debug-brk --harmony --trace-warnings test/tests.js",
+    "debug": "node-debug index.js",
+    "coverage": "istanbul cover _mocha test/tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/demsking/firebase-admin-shadow.git"
+  },
+  "keywords": [
+    "firebase",
+    "admin",
+    "mock",
+    "mocking",
+    "unit",
+    "test",
+    "shadow"
+  ],
+  "author": "Sébastien Demanou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/demsking/firebase-admin-shadow/issues"
+  },
+  "homepage": "https://github.com/demsking/firebase-admin-shadow#readme",
+  "devDependencies": {
+    "istanbul": "^0.4.5",
+    "mocha": "^3.5.0",
+    "nodemon": "^1.11.0",
+    "standard": "^10.0.3"
+  }
+}
