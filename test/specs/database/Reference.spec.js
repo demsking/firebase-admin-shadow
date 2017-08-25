@@ -1,7 +1,8 @@
 'use strict'
 
+const EventEmitter = require('events')
 const assert = require('assert')
-const { Reference } = require('../../../lib/database/Reference')
+const { $, Reference } = require('../../../lib/database/Reference')
 
 /* global describe it */
 
@@ -91,10 +92,12 @@ describe('Reference', () => {
     })
 
     it('should successfully handle child_added event', (done) => {
-      const usersRef = Reference.get('users', app)
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
       const data = { ada: { name: { first: 'Anna' } } }
 
-      usersRef.once('child_added', (snapshot) => {
+      $.listeners[key] = new EventEmitter()
+      $.listeners[key].once('child_added', (snapshot) => {
         assert.deepEqual(snapshot.value, data)
         done()
       })
@@ -103,12 +106,14 @@ describe('Reference', () => {
     })
 
     it('should successfully handle child_changed event', (done) => {
-      const usersRef = Reference.get('users', app)
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
       const initialData = { ada: { name: { last: 'Ada' } } }
       const pushData = { ada: { name: { first: 'Anna' } } }
       const expectedData = Object.assign({}, initialData, pushData)
 
-      usersRef.once('child_changed', (snapshot) => {
+      $.listeners[key] = new EventEmitter()
+      $.listeners[key].once('child_changed', (snapshot) => {
         assert.deepEqual(snapshot.value, expectedData)
         done()
       })
@@ -118,10 +123,12 @@ describe('Reference', () => {
     })
 
     it('should successfully handle value event', (done) => {
-      const usersRef = Reference.get('users', app)
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
       const data = { ada: { name: { first: 'Anna' } } }
 
-      usersRef.once('value', (snapshot) => {
+      $.listeners[key] = new EventEmitter()
+      $.listeners[key].once('value', (snapshot) => {
         assert.deepEqual(snapshot.value, data)
         done()
       })
