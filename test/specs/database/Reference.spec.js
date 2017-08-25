@@ -70,6 +70,43 @@ describe('Reference', () => {
     })
   })
 
+  describe('push()', () => {
+    it('should successfully push new data using callback', () => {
+      const usersRef = Reference.get('users', app)
+      const initialData = { ada: { name: { last: 'Ada' } } }
+      const pushData = { ada: { name: { first: 'Anna' } } }
+      const expectedData = Object.assign({}, initialData, pushData)
+
+      usersRef.set(initialData)
+
+      return usersRef.push(pushData, (snapshot) => {
+        assert.deepEqual(snapshot.value, expectedData)
+      })
+    })
+
+    it('should successfully push new data using promise', () => {
+      const usersRef = Reference.get('users', app)
+      const initialData = { ada: { name: { last: 'Ada' } } }
+      const pushData = { ada: { name: { first: 'Anna' } } }
+      const expectedData = Object.assign({}, initialData, pushData)
+
+      usersRef.set(initialData)
+
+      return usersRef.push(expectedData).then((snapshot) => {
+        assert.deepEqual(snapshot.value, expectedData)
+      })
+    })
+
+    it('should successfully push data as initial data', () => {
+      const usersRef = Reference.get('users', app)
+      const data = { ada: { name: { first: 'Anna' } } }
+
+      return usersRef.push(data, (snapshot) => {
+        assert.deepEqual(snapshot.value, data)
+      })
+    })
+  })
+
   describe('endAt()', () => {
     it('should successfully find all dinosaurs whose names come before Pterodactyl lexicographically', () => {
       const ref = Reference.get('dinosaurs');
