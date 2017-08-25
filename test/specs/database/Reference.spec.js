@@ -50,6 +50,86 @@ describe('Reference', () => {
     })
   })
 
+  describe('setValue()', () => {
+    it('should successfully set null data', () => {
+      const usersRef = Reference.get('users', app)
+
+      return Reference.setValue(usersRef, null)
+        .then((snapshot) => {
+          assert.equal(snapshot.value, null)
+        })
+    })
+
+    it('should successfully set data', () => {
+      const usersRef = Reference.get('users', app)
+      const data = { ada: { name: { first: 'Anna' } } }
+
+      Reference.setValue(usersRef, data)
+
+      assert.deepEqual(usersRef.snapshot.value, data)
+    })
+
+    it('should successfully push new data', () => {
+      const usersRef = Reference.get('users', app)
+      const initialData = { ada: { name: { last: 'Ada' } } }
+      const pushData = { ada: { name: { first: 'Anna' } } }
+      const expectedData = Object.assign({}, initialData, pushData)
+
+      Reference.setValue(usersRef, initialData)
+      Reference.setValue(usersRef, pushData, true)
+
+      assert.deepEqual(usersRef.snapshot.value, expectedData)
+    })
+
+    it('should successfully push data as initial data', () => {
+      const usersRef = Reference.get('users', app)
+      const data = { ada: { name: { first: 'Anna' } } }
+
+      Reference.setValue(usersRef, data, true)
+
+      assert.deepEqual(usersRef.snapshot.value, data)
+    })
+
+    it('should successfully handle child_added event', (done) => {
+      const usersRef = Reference.get('users', app)
+      const data = { ada: { name: { first: 'Anna' } } }
+
+      usersRef.once('child_added', (snapshot) => {
+        assert.deepEqual(snapshot.value, data)
+        done()
+      })
+
+      Reference.setValue(usersRef, data)
+    })
+
+    it('should successfully handle child_changed event', (done) => {
+      const usersRef = Reference.get('users', app)
+      const initialData = { ada: { name: { last: 'Ada' } } }
+      const pushData = { ada: { name: { first: 'Anna' } } }
+      const expectedData = Object.assign({}, initialData, pushData)
+
+      usersRef.once('child_changed', (snapshot) => {
+        assert.deepEqual(snapshot.value, expectedData)
+        done()
+      })
+
+      Reference.setValue(usersRef, initialData)
+      Reference.setValue(usersRef, pushData, true)
+    })
+
+    it('should successfully handle value event', (done) => {
+      const usersRef = Reference.get('users', app)
+      const data = { ada: { name: { first: 'Anna' } } }
+
+      usersRef.once('value', (snapshot) => {
+        assert.deepEqual(snapshot.value, data)
+        done()
+      })
+
+      Reference.setValue(usersRef, data)
+    })
+  })
+
   describe('set()', () => {
     it('should successfully set data using callback', () => {
       const usersRef = Reference.get('users', app)
