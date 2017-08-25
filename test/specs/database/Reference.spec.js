@@ -50,6 +50,26 @@ describe('Reference', () => {
     })
   })
 
+  describe('set()', () => {
+    it('should successfully set data using callback', () => {
+      const usersRef = Reference.get('users', app)
+      const data = { ada: { name: { first: 'Anna' } } }
+
+      return usersRef.set(data, (snapshot) => {
+        assert.deepEqual(snapshot.value, data)
+      })
+    })
+
+    it('should successfully set data using promise', () => {
+      const usersRef = Reference.get('users', app)
+      const data = { ada: { name: { first: 'Anna' } } }
+
+      return usersRef.set(data).then((snapshot) => {
+        assert.deepEqual(snapshot.value, data)
+      })
+    })
+  })
+
   describe('endAt()', () => {
     it('should successfully find all dinosaurs whose names come before Pterodactyl lexicographically', () => {
       const ref = Reference.get('dinosaurs');
