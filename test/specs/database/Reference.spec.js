@@ -28,6 +28,17 @@ describe('Reference', () => {
     })
   })
 
+  describe('toString()', () => {
+    it('should successfully generate the reference URL', () => {
+      const usersRef = Reference.get('users', app)
+      const adaRef = usersRef.child('ada')
+      const adaFirstNameRef = adaRef.child('name/first')
+      const path = adaFirstNameRef.toString()
+
+      assert.equal(path, `https://${app.options.databaseURL}/users/ada/name/first`)
+    })
+  })
+
   describe('child()', () => {
     it('should successfully create a child', () => {
       const usersRef = Reference.get('users', app)
