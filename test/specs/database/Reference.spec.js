@@ -56,8 +56,8 @@ describe('Reference', () => {
       const usersRef = Reference.get('users', app)
 
       return Reference.setValue(usersRef, null)
-        .then((snapshot) => {
-          assert.equal(snapshot.value, null)
+        .then(() => {
+          assert.equal(usersRef.snapshot.value, null)
         })
     })
 
@@ -97,8 +97,8 @@ describe('Reference', () => {
       const data = { ada: { name: { first: 'Anna' } } }
 
       $.listeners[key] = new EventEmitter()
-      $.listeners[key].once('child_added', (snapshot) => {
-        assert.deepEqual(snapshot.value, data)
+      $.listeners[key].once('child_added', () => {
+        assert.deepEqual(usersRef.snapshot.value, data)
         done()
       })
 
@@ -113,8 +113,8 @@ describe('Reference', () => {
       const expectedData = Object.assign({}, initialData, pushData)
 
       $.listeners[key] = new EventEmitter()
-      $.listeners[key].once('child_changed', (snapshot) => {
-        assert.deepEqual(snapshot.value, expectedData)
+      $.listeners[key].once('child_changed', () => {
+        assert.deepEqual(usersRef.snapshot.value, expectedData)
         done()
       })
 
@@ -128,8 +128,8 @@ describe('Reference', () => {
       const data = { ada: { name: { first: 'Anna' } } }
 
       $.listeners[key] = new EventEmitter()
-      $.listeners[key].once('value', (snapshot) => {
-        assert.deepEqual(snapshot.value, data)
+      $.listeners[key].once('value', () => {
+        assert.deepEqual(usersRef.snapshot.value, data)
         done()
       })
 
@@ -143,7 +143,7 @@ describe('Reference', () => {
       const data = { ada: { name: { first: 'Anna' } } }
 
       return usersRef.set(data, (snapshot) => {
-        assert.deepEqual(snapshot.value, data)
+        assert.deepEqual(usersRef.snapshot.value, data)
       })
     })
 
@@ -151,8 +151,8 @@ describe('Reference', () => {
       const usersRef = Reference.get('users', app)
       const data = { ada: { name: { first: 'Anna' } } }
 
-      return usersRef.set(data).then((snapshot) => {
-        assert.deepEqual(snapshot.value, data)
+      return usersRef.set(data).then(() => {
+        assert.deepEqual(usersRef.snapshot.value, data)
       })
     })
   })
@@ -166,8 +166,8 @@ describe('Reference', () => {
 
       usersRef.set(initialData)
 
-      return usersRef.push(pushData, (snapshot) => {
-        assert.deepEqual(snapshot.value, expectedData)
+      return usersRef.push(pushData, () => {
+        assert.deepEqual(usersRef.snapshot.value, expectedData)
       })
     })
 
@@ -179,8 +179,8 @@ describe('Reference', () => {
 
       usersRef.set(initialData)
 
-      return usersRef.push(expectedData).then((snapshot) => {
-        assert.deepEqual(snapshot.value, expectedData)
+      return usersRef.push(expectedData).then(() => {
+        assert.deepEqual(usersRef.snapshot.value, expectedData)
       })
     })
 
@@ -188,8 +188,8 @@ describe('Reference', () => {
       const usersRef = Reference.get('users', app)
       const data = { ada: { name: { first: 'Anna' } } }
 
-      return usersRef.push(data, (snapshot) => {
-        assert.deepEqual(snapshot.value, data)
+      return usersRef.push(data, () => {
+        assert.deepEqual(usersRef.snapshot.value, data)
       })
     })
   })

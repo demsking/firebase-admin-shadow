@@ -130,9 +130,9 @@ describe('DataSnapshot', () => {
       const value = { firstname: 'Shaka', lastname: 'Zulu' }
       const ref = Reference.get(key)
 
-      return ref.set(value).then((snapshot) => {
+      return ref.set(value).then(() => {
         Object.keys(value).forEach((key) => {
-          assert.ok(snapshot.hasChild(key))
+          assert.ok(ref.snapshot.hasChild(key))
         })
       })
     })
@@ -142,8 +142,8 @@ describe('DataSnapshot', () => {
       const value = { firstname: 'Shaka', lastname: 'Zulu' }
       const ref = Reference.get(key)
 
-      return ref.set(value).then((snapshot) => {
-        assert.equal(snapshot.hasChild('nonexistent'), false)
+      return ref.set(value).then(() => {
+        assert.equal(ref.snapshot.hasChild('nonexistent'), false)
       })
     })
   })
@@ -154,10 +154,10 @@ describe('DataSnapshot', () => {
       const value = { firstname: 'Shaka', lastname: 'Zulu' }
       const ref = Reference.get(key)
 
-      return ref.set(value).then((snapshot) => {
-        assert.equal(snapshot.numChildren(), Object.keys(value).length)
+      return ref.set(value).then(() => {
+        assert.equal(ref.snapshot.numChildren(), Object.keys(value).length)
 
-        snapshot.forEach((snapshotChild) => {
+        ref.snapshot.forEach((snapshotChild) => {
           assert.equal(snapshotChild.numChildren(), 0)
         })
       })
@@ -170,10 +170,10 @@ describe('DataSnapshot', () => {
       const value = { firstname: 'Shaka', lastname: 'Zulu' }
       const ref = Reference.get(key)
 
-      return ref.set(value).then((snapshot) => {
-        assert.equal(snapshot.hasChildren(), true)
+      return ref.set(value).then(() => {
+        assert.equal(ref.snapshot.hasChildren(), true)
 
-        snapshot.forEach((snapshotChild) => {
+        ref.snapshot.forEach((snapshotChild) => {
           assert.equal(snapshotChild.numChildren(), false)
         })
       })
