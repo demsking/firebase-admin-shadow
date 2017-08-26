@@ -220,13 +220,15 @@ describe('Reference', () => {
     })
 
     it('should successfully handle event child_changed on updated', () => {
-      const usersRef = Reference.get('users', app)
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
       const initialData = { ada: { name: { last: 'Ada' } } }
       const updateData = { ada: { name: { last: 'Anna' } } }
 
       usersRef.set(initialData)
 
-      usersRef.on('child_changed', (snapshot) => {
+      $.listeners[key] = new EventEmitter()
+      $.listeners[key].on('child_changed', (snapshot) => {
         assert.deepEqual(snapshot.value, updateData)
       })
 
@@ -258,12 +260,14 @@ describe('Reference', () => {
     })
 
     it('should successfully handle event child_removed on removed', () => {
-      const usersRef = Reference.get('users', app)
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
       const data = { ada: { name: { last: 'Ada' } } }
 
       usersRef.set(data)
 
-      usersRef.on('child_removed', (snapshot) => {
+      $.listeners[key] = new EventEmitter()
+      $.listeners[key].on('child_removed', (snapshot) => {
         assert.equal(snapshot.value, null)
       })
 

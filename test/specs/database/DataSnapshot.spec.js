@@ -103,8 +103,8 @@ describe('DataSnapshot', () => {
       const value = { firstname: 'Shaka', lastname: 'Zulu' }
       const ref = Reference.get(key)
 
-      ref.set(value).then((snapshot) => {
-        snapshot.forEach((snapshot) => {
+      ref.set(value).then(() => {
+        ref.snapshot.forEach((snapshot) => {
           const childKey = snapshot.key.split(/\//)[1]
 
           assert.deepEqual(snapshot.val(), value[childKey])
