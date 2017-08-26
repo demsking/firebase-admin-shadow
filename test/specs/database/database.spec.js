@@ -1,12 +1,23 @@
 'use strict'
 
 const assert = require('assert')
-const { extension } = require('../../../lib/database')
+const { service, extension } = require('../../../lib/database')
 
 /* global describe it */
 
 describe('Database Service', () => {
-  beforeEach(() => {
-    Reference.clear()
+  describe('Service Instance', () => {
+    const key = 'users'
+    const app = {
+      options: {
+        databaseURL: 'sample-app.firebaseio.com'
+      }
+    }
+
+    it('should successfully create a database instance', () => {
+      const database = service(app)
+
+      assert.deepEqual(Object.keys(database), ['ref'])
+    })
   })
 })
