@@ -6,9 +6,16 @@ const { $, Reference } = require('../../../lib/database/Reference')
 
 /* global describe it */
 
+const originalConsoleWarn = console.warn
+
 describe('Reference', () => {
   beforeEach(() => {
+    console.warn = () => {}
     Reference.clear()
+  })
+
+  afterEach(() => {
+    console.warn = originalConsoleWarn
   })
 
   const key = 'key'
@@ -272,6 +279,39 @@ describe('Reference', () => {
       })
 
       usersRef.remove()
+    })
+  })
+
+  describe('on()', () => {
+    it('should failed add unimplemented event type', () => {
+      const usersRef = Reference.get('users', app)
+      const eventType = 'child_moved'
+      const warningMessage = `Not Yet Implemented: event '${eventType}'. Ignored`
+
+      console.warn = (str) => assert.equal(str, warningMessage)
+      usersRef.on(eventType)
+    })
+
+    it('should successfully add new event listener', () => {
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
+
+      assert.equal($.listeners[key], undefined)
+
+      usersRef.on('value', () => {})
+
+      assert.notEqual($.listeners[key], undefined)
+    })
+
+    it('should successfully add another event listener', () => {
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
+
+      usersRef.on('value', () => {})
+      assert.notEqual($.listeners[key], undefined)
+
+      usersRef.on('value', () => {})
+      assert.notEqual($.listeners[key], undefined)
     })
   })
 
