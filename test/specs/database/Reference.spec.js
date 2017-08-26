@@ -315,6 +315,62 @@ describe('Reference', () => {
     })
   })
 
+  describe('once()', () => {
+    it('should failed add unimplemented event type', () => {
+      const usersRef = Reference.get('users', app)
+      const eventType = 'child_moved'
+      const warningMessage = `Not Yet Implemented: event '${eventType}'. Ignored`
+
+      console.warn = (str) => assert.equal(str, warningMessage)
+      usersRef.once(eventType)
+    })
+
+    it('should successfully returning promise for undefined callback', () => {
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
+      const data = { ada: { name: { last: 'Ada' } } }
+
+      usersRef.set(data)
+
+      const promise = usersRef.once('value')
+
+      assert.ok(promise instanceof Promise)
+
+      return promise.then((snapshot) => assert.deepEqual(snapshot.value, data))
+    })
+
+    it('should successfully catching promise for empty snapshot', (done) => {
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
+
+      usersRef.once('value')
+        .then(() => done(new Error()))
+        .catch(() => done())
+    })
+
+    it('should successfully add new event listener', () => {
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
+
+      assert.equal($.listeners[key], undefined)
+
+      usersRef.once('value', () => {})
+
+      assert.notEqual($.listeners[key], undefined)
+    })
+
+    it('should successfully add another event listener', () => {
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
+
+      usersRef.once('value', () => {})
+      assert.notEqual($.listeners[key], undefined)
+
+      usersRef.once('value', () => {})
+      assert.notEqual($.listeners[key], undefined)
+    })
+  })
+
   describe('endAt()', () => {
     it('should successfully find all dinosaurs whose names come before Pterodactyl lexicographically', () => {
       const ref = Reference.get('dinosaurs');
