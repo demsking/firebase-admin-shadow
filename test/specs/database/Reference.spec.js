@@ -11,7 +11,8 @@ const originalConsoleWarn = console.warn
 describe('Reference', () => {
   beforeEach(() => {
     console.warn = () => {}
-    Reference.clear()
+    $.references = {}
+    $.listeners = {}
   })
 
   afterEach(() => {
@@ -24,6 +25,20 @@ describe('Reference', () => {
       databaseURL: 'sample-app.firebaseio.com'
     }
   }
+
+  describe('clear()', () => {
+    it('should successfully clear caching references and listeners', () => {
+      assert.equal($.references[key], undefined)
+
+      Reference.get(key, app).on('value', () => {})
+      assert.notEqual($.references[key], undefined)
+      assert.notEqual($.listeners[key], undefined)
+
+      Reference.clear()
+      assert.equal($.references[key], undefined)
+      assert.equal($.listeners[key], undefined)
+    })
+  })
 
   describe('constructor()', () => {
     it('should successfully instanciate an object', () => {
