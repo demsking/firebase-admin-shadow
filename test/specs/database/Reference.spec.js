@@ -234,6 +234,43 @@ describe('Reference', () => {
     })
   })
 
+  describe('remove()', () => {
+    it('should successfully remove data using callback', () => {
+      const usersRef = Reference.get('users', app)
+      const data = { ada: { name: { last: 'Ada' } } }
+
+      usersRef.set(data)
+
+      return usersRef.remove(() => {
+        assert.equal(usersRef.snapshot.value, null)
+      })
+    })
+
+    it('should successfully remove data using promise', () => {
+      const usersRef = Reference.get('users', app)
+      const data = { ada: { name: { last: 'Ada' } } }
+
+      usersRef.set(data)
+
+      return usersRef.remove().then(() => {
+        assert.equal(usersRef.snapshot.value, null)
+      })
+    })
+
+    it('should successfully handle event child_removed on removed', () => {
+      const usersRef = Reference.get('users', app)
+      const data = { ada: { name: { last: 'Ada' } } }
+
+      usersRef.set(data)
+
+      usersRef.on('child_removed', (snapshot) => {
+        assert.equal(snapshot.value, null)
+      })
+
+      usersRef.remove()
+    })
+  })
+
   describe('endAt()', () => {
     it('should successfully find all dinosaurs whose names come before Pterodactyl lexicographically', () => {
       const ref = Reference.get('dinosaurs');
