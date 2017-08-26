@@ -194,6 +194,46 @@ describe('Reference', () => {
     })
   })
 
+  describe('update()', () => {
+    it('should successfully update data using callback', () => {
+      const usersRef = Reference.get('users', app)
+      const initialData = { ada: { name: { last: 'Ada' } } }
+      const updateData = { ada: { name: { last: 'Anna' } } }
+
+      usersRef.set(initialData)
+
+      return usersRef.update(updateData, () => {
+        assert.deepEqual(usersRef.snapshot.value, updateData)
+      })
+    })
+
+    it('should successfully update data using promise', () => {
+      const usersRef = Reference.get('users', app)
+      const initialData = { ada: { name: { last: 'Ada' } } }
+      const updateData = { ada: { name: { last: 'Anna' } } }
+
+      usersRef.set(initialData)
+
+      return usersRef.update(updateData).then(() => {
+        assert.deepEqual(usersRef.snapshot.value, updateData)
+      })
+    })
+
+    it('should successfully handle event child_changed on updated', () => {
+      const usersRef = Reference.get('users', app)
+      const initialData = { ada: { name: { last: 'Ada' } } }
+      const updateData = { ada: { name: { last: 'Anna' } } }
+
+      usersRef.set(initialData)
+
+      usersRef.on('child_changed', (snapshot) => {
+        assert.deepEqual(snapshot.value, updateData)
+      })
+
+      usersRef.update(updateData)
+    })
+  })
+
   describe('endAt()', () => {
     it('should successfully find all dinosaurs whose names come before Pterodactyl lexicographically', () => {
       const ref = Reference.get('dinosaurs');
