@@ -371,6 +371,36 @@ describe('Reference', () => {
     })
   })
 
+  describe('off()', () => {
+    it('should failed add unimplemented event type', () => {
+      const usersRef = Reference.get('users', app)
+      const eventType = 'child_moved'
+      const warningMessage = `Not Yet Implemented: event '${eventType}'. Ignored`
+
+      console.warn = (str) => assert.equal(str, warningMessage)
+      usersRef.off(eventType)
+    })
+
+    it('should successfully remove existing event listener', () => {
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
+
+      usersRef
+        .on('value', () => {})
+        .off('value', () => {})
+
+      assert.equal($.listeners[key], undefined)
+    })
+
+    it('should successfully ignored an unexisting event listener', () => {
+      const key = 'users'
+      const usersRef = Reference.get(key, app)
+
+      usersRef.off('value', () => {})
+      assert.equal($.listeners[key], undefined)
+    })
+  })
+
   describe('endAt()', () => {
     it('should successfully find all dinosaurs whose names come before Pterodactyl lexicographically', () => {
       const ref = Reference.get('dinosaurs');
