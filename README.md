@@ -28,9 +28,11 @@ const api = require('../lib/api')
 
 - [ ] Auth
 - [x] Realtime Database
-  - Missing `child_moved` events
-  - Missing an implementation for priorities
+	- Missing `child_moved` events
+	- Missing an implementation for priorities
+	- Missing implementaton of Query
 - [ ] Messaging
+- [ ] Storage
 
 ## License
 
