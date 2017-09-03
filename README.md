@@ -26,7 +26,7 @@ const api = require('../lib/api')
 
 ## Supported features
 
-- [ ] Auth
+- [x] Auth
 - [x] Realtime Database
 	- Missing `child_moved` events
 	- Missing an implementation for priorities

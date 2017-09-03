@@ -1,6 +1,6 @@
 {
   "name": "firebase-admin-shadow",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Firebase Admin Shadow Mock for NodeJS",
   "main": "index.js",
   "scripts": {
