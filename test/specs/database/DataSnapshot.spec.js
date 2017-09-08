@@ -4,7 +4,7 @@ const assert = require('assert')
 const { Reference } = require('../../../lib/database/Reference')
 const { DataSnapshot } = require('../../../lib/database/DataSnapshot')
 
-/* global describe it */
+/* global describe it beforeEach */
 
 describe('DataSnapshot', () => {
   beforeEach(() => {

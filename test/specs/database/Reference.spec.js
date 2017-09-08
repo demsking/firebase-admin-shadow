@@ -4,7 +4,7 @@ const EventEmitter = require('events')
 const assert = require('assert')
 const { $, Reference } = require('../../../lib/database/Reference')
 
-/* global describe it */
+/* global describe it beforeEach afterEach */
 
 const originalConsoleWarn = console.warn
 
@@ -418,7 +418,7 @@ describe('Reference', () => {
 
   describe('endAt()', () => {
     it('should successfully find all dinosaurs whose names come before Pterodactyl lexicographically', () => {
-      const ref = Reference.get('dinosaurs');
+      const ref = Reference.get('dinosaurs')
 
       return ref.orderByKey().endAt('pterodactyl')
         .once('child_added', (snapshot) => {

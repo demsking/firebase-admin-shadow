@@ -11,7 +11,7 @@ const {
   db
 } = require('../../../lib/auth')
 
-/* global describe it */
+/* global describe it beforeEach */
 
 describe('Auth Service', () => {
   describe('Service Instance', () => {
@@ -101,7 +101,7 @@ describe('Auth Service', () => {
           .then((userRecord) => {
             throw new Error('Should failed with a non-existing email')
           })
-          .catch((err) => Promise.resolve())
+          .catch(() => Promise.resolve())
       })
 
       it('should successfully retrieve user with its email', () => {
@@ -149,7 +149,7 @@ describe('Auth Service', () => {
           .then((userRecord) => {
             throw new Error('Should failed with existing email')
           })
-          .catch((err) => Promise.resolve())
+          .catch(() => Promise.resolve())
       })
     })
 
@@ -159,7 +159,7 @@ describe('Auth Service', () => {
           .then((userRecord) => {
             throw new Error('Should failed with a non-existing email')
           })
-          .catch((err) => Promise.resolve())
+          .catch(() => Promise.resolve())
       })
 
       it('should successfully retrieve an user data using its UID', () => {
